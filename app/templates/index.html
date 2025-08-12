@@ -1,0 +1,49 @@
+<!doctype html>
+<html>
+<head>
+    <title>No-Show Prediction</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 600px; margin: 40px auto; }
+        label { display: block; margin-top: 15px; }
+        input[type=number], input[type=text] { width: 100%; padding: 8px; box-sizing: border-box; }
+        button { margin-top: 20px; padding: 10px 15px; font-size: 1em; }
+        .result { margin-top: 25px; background-color: #f0f0f0; padding: 15px; border-radius: 6px; }
+    </style>
+</head>
+<body>
+<h1>No-Show Prediction</h1>
+<form method="post">
+    <label>Age</label>
+    <input type="number" name="Age" value="{{ form.get('Age', 35) }}" required>
+
+    <label>Gender (0=Male, 1=Female)</label>
+    <input type="number" name="Gender" min="0" max="1" value="{{ form.get('Gender', 1) }}" required>
+
+    <label>Booking Lead Time (days)</label>
+    <input type="number" name="BookingLeadTime" value="{{ form.get('BookingLeadTime', 5) }}" required>
+
+    <label>Previous No-Shows</label>
+    <input type="number" name="PreviousNoShows" value="{{ form.get('PreviousNoShows', 0) }}" required>
+
+    <label>SMS Reminder Sent (0=No, 1=Yes)</label>
+    <input type="number" name="SMSReminderSent" min="0" max="1" value="{{ form.get('SMSReminderSent', 1) }}" required>
+
+    <label>Chronic Conditions (0=No, 1=Yes)</label>
+    <input type="number" name="ChronicConditions" min="0" max="1" value="{{ form.get('ChronicConditions', 0) }}" required>
+
+    <label>Distance To Clinic (km)</label>
+    <input type="text" name="DistanceToClinic" value="{{ form.get('DistanceToClinic', 3.2) }}" required>
+
+    <button type="submit">Predict</button>
+</form>
+
+{% if result %}
+<div class="result">
+    <strong>Prediction:</strong> {{ result }}<br>
+    {% if prob is not none %}
+    <strong>Probability of No-Show:</strong> {{ '%.2f'|format(prob) }}
+    {% endif %}
+</div>
+{% endif %}
+</body>
+</html>
